@@ -15,7 +15,7 @@ from pymongo.server_api import ServerApi
 from datetime import datetime, timedelta
 import psycopg2
 
-# A DAG represents a workflow, a collection of tasks
+
 with DAG(
     dag_id="homework",
     start_date=datetime(2022, 1, 1),
@@ -39,13 +39,13 @@ with DAG(
             temperature = random.randint(10, 40)
             humidity = random.randint(10, 100)
             timestamp = datetime.datetime.now()
-            creator = "oguzkortun"  # kendi ad soyadınızı yazın
+            creator = "oguzkortun"  
             record = HeatAndHumidityMeasureEvent(temperature, humidity, timestamp, creator)
             records.append(record)
         return records
 
     def save_data_to_mongodb(records):
-        collection = db["user_coll_oguzkortun"]  # sample_coll yerine kendi collection adınız
+        collection = db["user_coll_oguzkortun"] 
         for record in records:
             collection.insert_one(record.__dict__)
 
@@ -112,7 +112,7 @@ with DAG(
     )
     finaltask = DummyOperator(task_id="finaltask")
 
-    # Flow.png’daki akış
+
     dag_start >> [create_sample_task, copy_logs_task]
     create_sample_task >> copy_anomalies_task >> finaltask
     copy_logs_task   >> finaltask
